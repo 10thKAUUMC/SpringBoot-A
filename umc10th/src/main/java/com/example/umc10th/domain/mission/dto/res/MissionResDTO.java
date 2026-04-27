@@ -1,4 +1,38 @@
 package com.example.umc10th.domain.mission.dto.res;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+
+import java.util.List;
+
 public class MissionResDTO {
+
+    @Builder
+    public record MissionList(
+            List<MissionSummary> missions
+    ) {
+    }
+
+    @Builder
+    public record MissionSummary(
+            @JsonProperty("store_id")
+            Long storeId,
+            @JsonProperty("store_name")
+            String storeName,
+            @JsonProperty("min_price")
+            Integer minPrice,
+            @JsonProperty("point_percent")
+            Integer pointPercent,
+            @JsonProperty("is_complete")
+            Integer isComplete
+    ) {
+    }
+
+    @Builder
+    public record MissionComplete(
+            @JsonProperty("is_complete")
+            Integer isComplete,
+            String message
+    ) {
+    }
 }
