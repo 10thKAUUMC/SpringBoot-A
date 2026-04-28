@@ -1,0 +1,6 @@
+this is just a note
+
+if there is an annotation like this: @Repository
+meaning this file/layer is accessing to the DB
+
+Also, it can interpret as this file that needs to handle data related exceptions
