@@ -19,7 +19,7 @@ public class Review extends BaseEntity{
     private long id;
 
     @Column(nullable = false)
-    private Integer rating;
+    private Float rating;
 
     @Column(columnDefinition = "TEXT") //Content might be long so it'll be TEXT type.
     private String content;
@@ -31,7 +31,7 @@ public class Review extends BaseEntity{
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY) //There can be multiple reviews on a single store
-    @JoinColumn(name = "store") // From DB, this is FK name
+    @JoinColumn(name = "store_id") // From DB, this is FK name
     private Store store;
 
 }

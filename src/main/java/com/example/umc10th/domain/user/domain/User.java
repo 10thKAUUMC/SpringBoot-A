@@ -1,8 +1,11 @@
 package com.example.umc10th.domain.user.domain;
 
+import com.example.umc10th.domain.mission.domain.UserMission;
 import com.example.umc10th.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.sql.Array;
 
 @Entity //Declaring matching entity with the DB
 @Getter //Automatically creates method when it's brought
@@ -31,5 +34,11 @@ public class User extends BaseEntity { //We need to know the time info, so inher
     //Mapping is_verified from ERD (default = false)
     @Column(columnDefinition = "BOOLEAN DEFAULT false")
     private Boolean isVerified;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Review> reviewList = new Array<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserMission> userMissionList = new ArrayList<>();
 
 }
