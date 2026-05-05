@@ -9,7 +9,11 @@ public class MissionResDTO {
 
     @Builder
     public record MissionList(
-            List<MissionSummary> missions
+            List<MissionSummary> missions,
+            @JsonProperty("next_cursor")
+            String nextCursor,
+            @JsonProperty("has_next")
+            Boolean hasNext
     ) {
     }
 

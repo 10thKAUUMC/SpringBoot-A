@@ -18,7 +18,11 @@ public class HomeResDTO {
             Integer targetMission,
             @JsonProperty("progress_point")
             Integer progressPoint,
-            List<MissionSummary> missions
+            List<MissionSummary> missions,
+            @JsonProperty("next_cursor")
+            String nextCursor,
+            @JsonProperty("has_next")
+            Boolean hasNext
     ) {
     }
 
