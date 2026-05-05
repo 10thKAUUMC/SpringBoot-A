@@ -6,6 +6,6 @@ public class ReviewReqDTO {
             Integer score,
             String body,
             Long storeId,
-            String userId
+            Long userId
     ) {}
 }

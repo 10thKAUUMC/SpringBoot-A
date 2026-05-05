@@ -5,7 +5,7 @@ public class UserReqDTO {
     public record JoinDTO(
             String userName,
             String phoneNumber,
-            String userId,
+            String loginId,
             String userPassword
     ){}
 }
