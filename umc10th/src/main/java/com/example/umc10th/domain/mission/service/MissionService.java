@@ -24,39 +24,42 @@ public class MissionService {
 
     public MissionResDTO.MissionList getMissionList(
             Long memberId,
-            int isComplete,
-            String cursor,
+            boolean isComplete,
+            int page,
             Integer size
     ) {
         int pageSize = size == null || size < 1 ? DEFAULT_PAGE_SIZE : size;
+        int pageIndex = Math.max(1, page);
+        long total = memberMissionRepository.countMissionList(memberId, isComplete);
+        int totalPages = pageSize < 1 ? 0 : (int) ((total + pageSize - 1) / pageSize);
+        int offset = (pageIndex - 1) * pageSize;
 
-        List<MissionListCursorRow> raw = memberMissionRepository.findMissionListWithCursor(
+        List<MissionListCursorRow> rows = memberMissionRepository.findMissionListPage(
                 memberId,
                 isComplete,
-                emptyToNull(cursor),
-                pageSize + 1
+                offset,
+                pageSize
         );
-        boolean hasNext = raw.size() > pageSize;
-        List<MissionListCursorRow> slice = hasNext ? raw.subList(0, pageSize) : raw;
-        String nextCursor = null;
-        if (hasNext && !slice.isEmpty()) {
-            nextCursor = slice.get(slice.size() - 1).getCursorValue();
-        }
 
         List<MissionResDTO.MissionSummary> missions = new ArrayList<>();
-        for (MissionListCursorRow row : slice) {
+        for (MissionListCursorRow row : rows) {
             missions.add(MissionResDTO.MissionSummary.builder()
                     .storeId(row.getStoreId())
                     .storeName(row.getStoreName())
                     .minPrice(row.getMinPrice())
                     .pointPercent(row.getPointPercent())
-                    .isComplete(row.getIsComplete())
+                    .isComplete(Boolean.TRUE.equals(row.getIsComplete()))
                     .build());
         }
 
+        boolean hasNext = totalPages > 0 && pageIndex < totalPages;
+
         return MissionResDTO.MissionList.builder()
                 .missions(missions)
-                .nextCursor(nextCursor)
+                .page(pageIndex)
+                .size(pageSize)
+                .totalElements(total)
+                .totalPages(totalPages)
                 .hasNext(hasNext)
                 .build();
     }
@@ -64,16 +67,12 @@ public class MissionService {
     @Transactional
     public MissionResDTO.MissionComplete completeMission(Long memberId, Long missionId) {
         MemberMission memberMission = memberMissionRepository
-                .findByMember_IdAndMission_Id(memberId, missionId)
+                .findByMember_MemberIdAndMission_Id(memberId, missionId)
                 .orElseThrow(() -> new GeneralException(GeneralErrorCode.NOT_FOUND));
         memberMission.markComplete();
         return MissionResDTO.MissionComplete.builder()
-                .isComplete(1)
+                .isComplete(true)
                 .message("미션이 성공되었습니다.")
                 .build();
-    }
-
-    private static String emptyToNull(String cursor) {
-        return (cursor == null || cursor.isBlank()) ? null : cursor;
     }
 }

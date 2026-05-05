@@ -38,7 +38,6 @@ public class Mission {
     @Column(name = "min_price", nullable = false)
     private Integer minPrice;
 
-    /** 적립 포인트 (명세의 accumulate_point) */
     @Column(name = "point", nullable = false)
     private Integer point;
 

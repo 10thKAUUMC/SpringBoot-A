@@ -22,12 +22,12 @@ public class MissionController {
 
     @GetMapping("/mission-list")
     public ApiResponse<MissionResDTO.MissionList> getMissionList(
-            @RequestParam(name = "is_complete") int isComplete,
+            @RequestParam(name = "is_complete") boolean isComplete,
             @RequestParam(name = "member_id", required = false, defaultValue = "1") Long memberId,
-            @RequestParam(required = false) String cursor,
+            @RequestParam(required = false, defaultValue = "1") int page,
             @RequestParam(required = false) Integer size
     ) {
-        MissionResDTO.MissionList result = missionService.getMissionList(memberId, isComplete, cursor, size);
+        MissionResDTO.MissionList result = missionService.getMissionList(memberId, isComplete, page, size);
         BaseSuccessCode code = MissionSuccessCode.MISSION_LIST_OK;
         return ApiResponse.onSuccess(code, result);
     }

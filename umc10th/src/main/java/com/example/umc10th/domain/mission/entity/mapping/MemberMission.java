@@ -45,8 +45,4 @@ public class MemberMission {
     public void markComplete() {
         this.complete = true;
     }
-
-    public int getCompleteFlag() {
-        return complete ? 1 : 0;
-    }
 }

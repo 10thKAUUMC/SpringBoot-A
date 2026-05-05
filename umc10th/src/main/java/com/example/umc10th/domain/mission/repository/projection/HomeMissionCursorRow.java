@@ -17,6 +17,4 @@ public interface HomeMissionCursorRow {
     Integer getPoint();
 
     Long getUserMissionId();
-
-    String getCursorValue();
 }

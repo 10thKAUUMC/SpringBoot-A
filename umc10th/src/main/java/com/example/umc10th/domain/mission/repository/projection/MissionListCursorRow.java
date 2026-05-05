@@ -10,7 +10,5 @@ public interface MissionListCursorRow {
 
     Integer getPointPercent();
 
-    Integer getIsComplete();
-
-    String getCursorValue();
+    Boolean getIsComplete();
 }

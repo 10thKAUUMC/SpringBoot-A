@@ -10,10 +10,14 @@ public class MissionResDTO {
     @Builder
     public record MissionList(
             List<MissionSummary> missions,
-            @JsonProperty("next_cursor")
-            String nextCursor,
+            int page,
+            int size,
+            @JsonProperty("total_elements")
+            long totalElements,
+            @JsonProperty("total_pages")
+            int totalPages,
             @JsonProperty("has_next")
-            Boolean hasNext
+            boolean hasNext
     ) {
     }
 
@@ -28,14 +32,14 @@ public class MissionResDTO {
             @JsonProperty("point_percent")
             Integer pointPercent,
             @JsonProperty("is_complete")
-            Integer isComplete
+            boolean isComplete
     ) {
     }
 
     @Builder
     public record MissionComplete(
             @JsonProperty("is_complete")
-            Integer isComplete,
+            boolean isComplete,
             String message
     ) {
     }

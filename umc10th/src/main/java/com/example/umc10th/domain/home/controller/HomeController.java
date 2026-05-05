@@ -20,17 +20,17 @@ public class HomeController {
 
     @GetMapping("/my-missions")
     public ApiResponse<HomeResDTO.MyMissions> getMyMissions(
-            @RequestParam(name = "is_complete", required = false, defaultValue = "0") int isComplete,
+            @RequestParam(name = "is_complete", required = false, defaultValue = "false") boolean isComplete,
             @RequestParam(name = "member_id", required = false, defaultValue = "1") Long memberId,
             @RequestParam(name = "address", required = false, defaultValue = "안암동") String address,
-            @RequestParam(required = false) String cursor,
+            @RequestParam(required = false, defaultValue = "1") int page,
             @RequestParam(required = false) Integer size
     ) {
         HomeResDTO.MyMissions result = homeService.getMyMissions(
                 memberId,
                 address,
                 isComplete,
-                cursor,
+                page,
                 size
         );
         BaseSuccessCode code = HomeSuccessCode.HOME_MISSION_LIST_OK;

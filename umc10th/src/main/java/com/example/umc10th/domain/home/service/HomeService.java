@@ -29,11 +29,12 @@ public class HomeService {
     public HomeResDTO.MyMissions getMyMissions(
             Long memberId,
             String address,
-            int isComplete,
-            String cursor,
+            boolean isComplete,
+            int page,
             Integer size
     ) {
         int pageSize = size == null || size < 1 ? DEFAULT_PAGE_SIZE : size;
+        int pageIndex = Math.max(1, page);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
@@ -41,22 +42,20 @@ public class HomeService {
         long progressMission = memberMissionRepository.countCompletedByMemberAndLocationName(memberId, address);
         int progressPoint = memberMissionRepository.sumMissionPointsCompletedByMemberAndLocationName(memberId, address);
 
-        List<HomeMissionCursorRow> raw = memberMissionRepository.findHomeMissionsWithCursor(
+        long total = memberMissionRepository.countHomeMissions(memberId, address, isComplete);
+        int totalPages = pageSize < 1 ? 0 : (int) ((total + pageSize - 1) / pageSize);
+        int offset = (pageIndex - 1) * pageSize;
+
+        List<HomeMissionCursorRow> rows = memberMissionRepository.findHomeMissionsPage(
                 memberId,
                 address,
                 isComplete,
-                emptyToNull(cursor),
-                pageSize + 1
+                offset,
+                pageSize
         );
-        boolean hasNext = raw.size() > pageSize;
-        List<HomeMissionCursorRow> slice = hasNext ? raw.subList(0, pageSize) : raw;
-        String nextCursor = null;
-        if (hasNext && !slice.isEmpty()) {
-            nextCursor = slice.get(slice.size() - 1).getCursorValue();
-        }
 
         List<HomeResDTO.MissionSummary> missions = new ArrayList<>();
-        for (HomeMissionCursorRow row : slice) {
+        for (HomeMissionCursorRow row : rows) {
             missions.add(HomeResDTO.MissionSummary.builder()
                     .storeId(row.getStoreId())
                     .storeName(row.getStoreName())
@@ -67,6 +66,8 @@ public class HomeService {
                     .build());
         }
 
+        boolean hasNext = totalPages > 0 && pageIndex < totalPages;
+
         return HomeResDTO.MyMissions.builder()
                 .address(address)
                 .myPoint(member.getPoint())
@@ -74,13 +75,12 @@ public class HomeService {
                 .targetMission((int) targetMission)
                 .progressPoint(progressPoint)
                 .missions(missions)
-                .nextCursor(nextCursor)
+                .page(pageIndex)
+                .size(pageSize)
+                .totalElements(total)
+                .totalPages(totalPages)
                 .hasNext(hasNext)
                 .build();
-    }
-
-    private static String emptyToNull(String cursor) {
-        return (cursor == null || cursor.isBlank()) ? null : cursor;
     }
 
     private static int toRemainingDays(LocalDate deadline) {
