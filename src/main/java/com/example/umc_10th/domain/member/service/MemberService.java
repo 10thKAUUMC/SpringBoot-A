@@ -11,7 +11,6 @@ import com.example.umc_10th.domain.mission.converter.MissionConverter;
 import com.example.umc_10th.domain.mission.dto.MissionResDTO;
 import com.example.umc_10th.domain.mission.enums.MissionStatus;
 import com.example.umc_10th.domain.mission.repository.MemberMissionRepository;
-import com.example.umc_10th.domain.mission.repository.MissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +39,7 @@ public class MemberService {
     public MemberResDTO.Home getHomeData(Long memberId) {
         // 사용자 조회
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("사용자 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         // 지역정보 DTO 변환
         MemberResDTO.GetLocation location = MemberResDTO.GetLocation.builder()
