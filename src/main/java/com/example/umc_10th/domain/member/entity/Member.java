@@ -1,6 +1,7 @@
 package com.example.umc_10th.domain.member.entity;
 
 import com.example.umc_10th.domain.member.enums.Gender;
+import com.example.umc_10th.domain.store.entity.Location;
 import com.example.umc_10th.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,31 +21,35 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "nickname")
     private String nickname;
 
-    @Column(name = "gender")
+    @Column(name = "gender", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private Gender gender = Gender.NONE;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
-    @Column(name = "birth")
+    @Column(name = "birth", nullable = false)
     private LocalDate birth;
 
-    @Column(name = "address")
+    @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "detail_address")
+    @Column(name = "detail_address", nullable = false)
     private String detailAddress;
 
-    @Column(name = "point")
-    private int point;
+    @Column(name = "point", nullable = false)
+    private int point = 0;
+
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
 }
