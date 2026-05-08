@@ -20,6 +20,7 @@ import java.util.List;
 public class MemberController {
     private final MemberService memberService;
 
+    // 마이페이지 API
     @PostMapping("/v1/users/me")
     public ApiResponse<MemberResDTO.GetInfo> getInfo(
             @RequestBody MemberReqDTO.GetInfo dto
@@ -27,29 +28,18 @@ public class MemberController {
         BaseSuccessCode code = MemberSuccessCode.OK;
         return ApiResponse.onSuccess(code, memberService.getInfo(dto));
     }
-    // 사용자 지역 조회
-    @GetMapping("/v1/users/location")
-    public ResponseEntity<ApiResponse<MemberResDTO.GetLocation>> getUserLocations() {
 
-        MemberResDTO.GetLocation location =
-                MemberResDTO.GetLocation.builder()
-                        .location("서울특별시 강남구")
-                        .build();
+    // 사용자 홈 화면 API
+    @GetMapping("/v1/users/home")
+    public ResponseEntity<ApiResponse<MemberResDTO.Home>> getDashboardData() {
+        Long memberId = 1L; // 임시 사용자 ID
 
-        return ResponseEntity.ok(ApiResponse.onSuccess(MemberSuccessCode.OK, location));
+        // 서비스 호출
+        MemberResDTO.Home dashboardData = memberService.getHomeData(memberId);
+
+        return ResponseEntity.ok(
+                ApiResponse.onSuccess(MemberSuccessCode.OK, dashboardData)
+        );
     }
-
-    // 사용자 포인트 조회
-    @GetMapping("/v1/users/point")
-    public ResponseEntity<ApiResponse<MemberResDTO.GetPoint>> getUserPoints() {
-
-        MemberResDTO.GetPoint point =
-                MemberResDTO.GetPoint.builder()
-                        .point(120)
-                        .build();
-
-        return ResponseEntity.ok(ApiResponse.onSuccess(MemberSuccessCode.OK, point));
-    }
-
 
 }

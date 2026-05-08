@@ -1,6 +1,9 @@
 package com.example.umc_10th.domain.member.dto;
 
+import com.example.umc_10th.domain.mission.dto.MissionResDTO;
 import lombok.Builder;
+
+import java.util.List;
 
 public class MemberResDTO {
 
@@ -24,6 +27,13 @@ public class MemberResDTO {
     public record GetPoint(
             Integer point
     ){}
+
+    @Builder
+    public record Home(
+            GetLocation location,
+            GetPoint points,
+            List<MissionResDTO.GetNearby> missions
+    ) {}
 
     //회원가입
     @Builder

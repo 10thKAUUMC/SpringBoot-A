@@ -15,4 +15,13 @@ public class MissionConverter {
                 .dueDate(memberMission.getDueDate())
                 .build();
     }
+
+    // 도전 가능한 미션을 변환
+    public static MissionResDTO.GetNearby toNearbyMissionDTO(MemberMission memberMission) {
+        return MissionResDTO.GetNearby.builder()
+                .storeName(memberMission.getMission().getStore().getName())
+                .missionTitle(memberMission.getMission().getTitle())
+                .rewardPoint(memberMission.getMission().getPoint())
+                .build();
+    }
 }
