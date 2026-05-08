@@ -2,7 +2,6 @@ package com.example.umc_10th.domain.member.controller;
 
 import com.example.umc_10th.domain.member.dto.MemberReqDTO;
 import com.example.umc_10th.domain.member.dto.MemberResDTO;
-import com.example.umc_10th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc_10th.domain.member.exception.code.MemberSuccessCode;
 import com.example.umc_10th.domain.member.service.MemberService;
 import com.example.umc_10th.global.apiPayload.ApiResponse;
