@@ -19,7 +19,7 @@ public class AuthController {
     private final MemberRepository memberRepository;
 
     // 회원가입
-    @PostMapping("/signup")
+    @PostMapping("/v1/signup")
     public ResponseEntity<ApiResponse<MemberResDTO.Signup>> signup(
             @RequestBody MemberReqDTO.Signup req
     ) {

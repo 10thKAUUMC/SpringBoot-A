@@ -1,0 +1,17 @@
+package com.example.umc_10th.domain.mission.repository;
+
+import com.example.umc_10th.domain.mission.entity.mapping.MemberMission;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+
+public interface MemberMissionRepository extends JpaRepository<MemberMission, Long> {
+
+    // 진행 중 또는 완료된 미션만 조회
+    @Query("SELECT mm FROM MemberMission mm " +
+           "JOIN FETCH mm.mission m " +
+           "WHERE mm.member.id = :memberId AND (mm.missionStatus = 'IN_PROGRESS' OR mm.missionStatus = 'COMPLETED')")
+    List<MemberMission> findInProgressOrCompletedMissions(@Param("memberId") Long memberId);
+}
