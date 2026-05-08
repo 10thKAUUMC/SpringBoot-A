@@ -18,7 +18,6 @@ public class ReviewController {
 
     @PostMapping("/{storeId}/reviews")
     public ResponseEntity<ApiResponse<ReviewResDTO.Create>> createReview(
-            @PathVariable Long storeId,
             @RequestBody ReviewReqDTO.Create request
     ) {
         Long memberId = 1L;
