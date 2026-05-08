@@ -9,6 +9,7 @@ import com.example.umc_10th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc_10th.domain.member.repository.MemberRepository;
 import com.example.umc_10th.domain.mission.converter.MissionConverter;
 import com.example.umc_10th.domain.mission.dto.MissionResDTO;
+import com.example.umc_10th.domain.mission.entity.mapping.MemberMission;
 import com.example.umc_10th.domain.mission.enums.MissionStatus;
 import com.example.umc_10th.domain.mission.repository.MemberMissionRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,30 +36,39 @@ public class MemberService {
         return MemberConverter.toGetInfo(member);
     }
 
-    // 홈 화면 생성
+    // 홈 화면 데이터 생성
     public MemberResDTO.Home getHomeData(Long memberId) {
-        // 사용자 조회
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+        // 사용자 데이터 로드
+        Member member = getMember(memberId);
 
-        // 지역정보 DTO 변환
-        MemberResDTO.GetLocation location = MemberResDTO.GetLocation.builder()
-                .location(member.getAddress())
-                .build();
+        // 사용자 지역 DTO 생성
+        MemberResDTO.GetLocation location = MemberConverter.toLocationDTO(member.getLocation());
 
-        // 포인트 정보 DTO 변환
-        MemberResDTO.GetPoint points = MemberResDTO.GetPoint.builder()
-                .point(member.getPoint())
-                .build();
+        // 사용자 포인트 DTO 생성
+        MemberResDTO.GetPoint points = MemberConverter.toPointDTO(member.getPoint());
 
-        // 사용자 지역 기반 도전 가능한 미션 조회 및 변환
-        List<MissionResDTO.GetNearby> missions = memberMissionRepository.findByMemberAndLocationAndStatus(
-                        memberId, member.getAddress(), MissionStatus.NOT_STARTED
-                ).stream()
-                .map(MissionConverter::toNearbyMissionDTO) // Converter 사용
-                .collect(Collectors.toList());
+        // 사용자 지역 기반 시작 전 상태 미션 데이터 생성
+        List<MissionResDTO.GetNearby> missions = getNearbyMissions(member);
 
-        // 통합 결과 반환
+        // 통합 DTO 반환
         return new MemberResDTO.Home(location, points, missions);
+    }
+
+    // 사용자 데이터 조회
+    private Member getMember(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+    }
+
+    // 지역 기반 시작 전 상태 미션 목록 조회
+    private List<MissionResDTO.GetNearby> getNearbyMissions(Member member) {
+
+        return memberMissionRepository.findHomeMissions(
+                        member.getId(),
+                        member.getLocation(),
+                        MissionStatus.NOT_STARTED
+                ).stream()
+                .map(MissionConverter::toNearbyMissionDTO)
+                .collect(Collectors.toList());
     }
 }

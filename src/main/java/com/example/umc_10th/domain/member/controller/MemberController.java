@@ -28,14 +28,15 @@ public class MemberController {
 
     // 사용자 홈 화면 API
     @GetMapping("/v1/users/home")
-    public ResponseEntity<ApiResponse<MemberResDTO.Home>> getDashboardData() {
+    public ResponseEntity<ApiResponse<MemberResDTO.Home>> getHome() {
+
         Long memberId = 1L; // 임시 사용자 ID
 
-        // 서비스 호출
-        MemberResDTO.Home dashboardData = memberService.getHomeData(memberId);
+        MemberResDTO.Home response =
+                memberService.getHomeData(memberId);
 
         return ResponseEntity.ok(
-                ApiResponse.onSuccess(MemberSuccessCode.OK, dashboardData)
+                ApiResponse.onSuccess(MemberSuccessCode.OK, response)
         );
     }
 
