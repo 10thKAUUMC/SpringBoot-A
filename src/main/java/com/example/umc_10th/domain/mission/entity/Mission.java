@@ -24,7 +24,7 @@ public class Mission extends BaseEntity {
     private String title;
 
     @Column(name = "point", nullable = false)
-    private int point;
+    private Integer point;
 
     @ManyToOne
     @JoinColumn(name = "store_id")
