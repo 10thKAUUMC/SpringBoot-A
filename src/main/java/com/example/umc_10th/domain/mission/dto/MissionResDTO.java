@@ -7,7 +7,12 @@ public class MissionResDTO {
 
     @Builder
     public record MissionListDTO(
-            List<MissionDTO> missions
+            List<MissionDTO> missions,
+            Integer listSize,
+            Integer totalPage,
+            Long totalElements,
+            Boolean isFirst,
+            Boolean isLast
     ) {}
 
     @Builder
