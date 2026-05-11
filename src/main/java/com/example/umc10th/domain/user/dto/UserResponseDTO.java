@@ -54,5 +54,20 @@ public class UserResponseDTO {
         LocalDateTime createdAt;
     }
 
+    public static class MyReviewPreViewListDTO {
+        List<MyReviewPreViewDTO> reviewList;
+        Integer listSize;
+        Long lastId;      // For next return cursor value (ID)
+        Float lastScore;  // For next return cursor value (Order by rating descending order)
+        Boolean hasNext;  // Checking the Next Page exists
+    }
+
+    public static class MyReviewPreViewDTO {
+        Long reviewId;
+        String storeName;
+        Float score;
+        String body;
+        LocalDateTime createdAt;
+    }
 
 }

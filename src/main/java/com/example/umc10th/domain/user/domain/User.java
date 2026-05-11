@@ -1,11 +1,13 @@
 package com.example.umc10th.domain.user.domain;
 
 import com.example.umc10th.domain.mission.domain.UserMission;
+import com.example.umc10th.domain.review.domain.Review;
 import com.example.umc10th.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity //Declaring matching entity with the DB
 @Getter //Automatically creates method when it's brought
@@ -14,7 +16,6 @@ import java.sql.Array;
 @AllArgsConstructor //Builder that as every field (pairs with builder)
 
 public class User extends BaseEntity { //We need to know the time info, so inherit BaseEntity
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //DB automatically creates ID (MySQL's Auto Increment)
@@ -36,7 +37,7 @@ public class User extends BaseEntity { //We need to know the time info, so inher
     private Boolean isVerified;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Review> reviewList = new Array<>();
+    private List<Review> reviewList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserMission> userMissionList = new ArrayList<>();

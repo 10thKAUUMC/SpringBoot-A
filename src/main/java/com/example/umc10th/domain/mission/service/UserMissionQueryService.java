@@ -2,7 +2,7 @@ package com.example.umc10th.domain.mission.service;
 
 import com.example.umc10th.domain.mission.domain.MissionStatus;
 import com.example.umc10th.domain.mission.domain.UserMission;
-import com.example.umc10th.domain.mission.repository.UserMissionRepository;
+import com.example.umc10th.domain.mission.dao.UserMissionRepository;
 import com.example.umc10th.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,10 +19,11 @@ public class UserMissionQueryService {
 
     private final UserMissionRepository userMissionRepository;
 
-    public Page<UserMission> getMyMissionList(User user, MissionStatus status, Integer page) {
+    public Page<UserMission> getMissions(Long userId, MissionStatus status, Integer page) {
         //Brings specific user's status(ongoing or completed)
-        Pageable pageable = PageRequest.of(page - 1, 10);
-        return userMissionRepository.findAllByUserAndStatus(user, status, pageable);
+        int pageNumber = (page != null && page > 0) ? page - 1 : 0;
+        Pageable pageable = PageRequest.of(pageNumber, 10);
+        return userMissionRepository.findAllByUserIdAndStatus(userId, status, pageable);
 
     }
 

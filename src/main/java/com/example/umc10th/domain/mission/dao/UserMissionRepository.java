@@ -15,6 +15,7 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
     //This is very useful when you're trying to find specific user on ongoing mission
     //List<UserMission> findAllByUserId(Long userId);
 
-    @Query("SELECT um FROM UserMission um JOIN FETCH um.mission m JOIN FETCH m.store WHERE um.user = :user AND um.status = :status")
-    Page<UserMission> findAllByUserAndStatus(@Param("user") User user, @Param("status") MissionStatus status, Pageable pageable);
+    @Query(value = "SELECT um FROM UserMission um JOIN FETCH um.mission m JOIN FETCH m.store WHERE um.user = :user AND um.status = :status",
+            countQuery = "SELECT count(um) FROM UserMission um WHERE um.user =:user AND um.status = :status") //Checks for paging error
+    Page<UserMission> findAllByUserIdAndStatus(@Param("userId") Long userId, @Param("status") MissionStatus status, Pageable pageable);
 }

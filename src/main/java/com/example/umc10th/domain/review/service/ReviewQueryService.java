@@ -2,7 +2,7 @@ package com.example.umc10th.domain.review.service;
 
 
 import com.example.umc10th.domain.review.domain.Review;
-import com.example.umc10th.domain.review.repository.ReviewRepository;
+import com.example.umc10th.domain.review.dao.ReviewRepository;
 import com.example.umc10th.domain.store.dao.StoreRepository;
 import com.example.umc10th.domain.store.domain.Store;
 import lombok.RequiredArgsConstructor;
