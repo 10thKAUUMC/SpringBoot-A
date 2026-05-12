@@ -45,6 +45,10 @@ public class Mission {
     @Builder.Default
     private Integer pointPercent = 0;
 
+    /** 워크북 미션 조건(설명) */
+    @Column(name = "mission_condition")
+    private String conditional;
+
     @Column(name = "d_day", nullable = false)
     private LocalDate dDay;
 

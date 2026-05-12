@@ -8,6 +8,25 @@ import java.util.List;
 public class MissionResDTO {
 
     @Builder
+    public record GetMission(
+            @JsonProperty("missionId")
+            Long missionId,
+            Integer point,
+            String conditional
+    ) {
+    }
+
+    @Builder
+    public record StoreMissionPage(
+            List<GetMission> data,
+            int pageNumber,
+            int pageSize,
+            long totalElements,
+            int totalPages
+    ) {
+    }
+
+    @Builder
     public record MissionList(
             List<MissionSummary> missions,
             int page,
