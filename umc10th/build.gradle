@@ -32,6 +32,9 @@ dependencies {
 	// Swagger
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.1'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:3.0.1'
+
+	// MySQL JDBC 드라이버 추가
+	runtimeOnly 'com.mysql:mysql-connector-j'
 }
 
 tasks.named('test') {

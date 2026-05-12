@@ -2,8 +2,10 @@ package com.example.umc10th.domain.mission.controller;
 
 import com.example.umc10th.domain.mission.dto.res.MissionResDTO;
 import com.example.umc10th.domain.mission.exception.code.MissionSuccessCode;
+import com.example.umc10th.domain.mission.service.MissionService;
 import com.example.umc10th.global.apiPayload.ApiResponse;
 import com.example.umc10th.global.apiPayload.code.BaseSuccessCode;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,50 +13,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/missions")
 public class MissionController {
 
+    private final MissionService missionService;
+
     @GetMapping("/mission-list")
     public ApiResponse<MissionResDTO.MissionList> getMissionList(
-            @RequestParam(name = "is_complete") Integer isComplete
+            @RequestParam(name = "is_complete") boolean isComplete,
+            @RequestParam(name = "member_id", required = false, defaultValue = "1") Long memberId,
+            @RequestParam(required = false, defaultValue = "1") int page,
+            @RequestParam(required = false) Integer size
     ) {
-        List<MissionResDTO.MissionSummary> missions = List.of(
-                MissionResDTO.MissionSummary.builder()
-                        .storeId(1L)
-                        .storeName("반이학생마라탕")
-                        .minPrice(10000)
-                        .pointPercent(5)
-                        .isComplete(isComplete)
-                        .build(),
-                MissionResDTO.MissionSummary.builder()
-                        .storeId(2L)
-                        .storeName("가게이름a")
-                        .minPrice(12000)
-                        .pointPercent(5)
-                        .isComplete(isComplete)
-                        .build()
-        );
-
-        MissionResDTO.MissionList result = MissionResDTO.MissionList.builder()
-                .missions(missions)
-                .build();
-
+        MissionResDTO.MissionList result = missionService.getMissionList(memberId, isComplete, page, size);
         BaseSuccessCode code = MissionSuccessCode.MISSION_LIST_OK;
         return ApiResponse.onSuccess(code, result);
     }
 
     @PatchMapping("/{missionId}/complete")
     public ApiResponse<MissionResDTO.MissionComplete> completeMission(
-            @PathVariable Long missionId
+            @PathVariable Long missionId,
+            @RequestParam(name = "member_id", required = false, defaultValue = "1") Long memberId
     ) {
-        MissionResDTO.MissionComplete result = MissionResDTO.MissionComplete.builder()
-                .isComplete(1)
-                .message("미션이 성공되었습니다.")
-                .build();
-
+        MissionResDTO.MissionComplete result = missionService.completeMission(memberId, missionId);
         BaseSuccessCode code = MissionSuccessCode.MISSION_COMPLETE_OK;
         return ApiResponse.onSuccess(code, result);
     }

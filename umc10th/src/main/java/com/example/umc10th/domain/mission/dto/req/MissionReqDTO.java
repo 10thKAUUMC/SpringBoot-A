@@ -6,7 +6,7 @@ public class MissionReqDTO {
 
     public record MissionListQuery(
             @JsonProperty("is_complete")
-            Integer isComplete
+            boolean isComplete
     ) {
     }
 }
