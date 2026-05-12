@@ -6,8 +6,7 @@ import com.example.umc10th.domain.mission.exception.code.MissionSuccessCode;
 import com.example.umc10th.domain.mission.service.MissionService;
 import com.example.umc10th.global.apiPayload.ApiResponse;
 import com.example.umc10th.global.apiPayload.code.BaseSuccessCode;
-import com.example.umc10th.global.apiPayload.code.GeneralErrorCode;
-import com.example.umc10th.global.apiPayload.exception.GeneralException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -26,11 +25,8 @@ public class MissionController {
 
     @GetMapping("/mission-list")
     public ApiResponse<MissionResDTO.MissionList> getMissionList(
-            @RequestBody MissionReqDTO.MissionListRequest request
+            @Valid @RequestBody MissionReqDTO.MissionListRequest request
     ) {
-        if (request.memberId() == null) {
-            throw new GeneralException(GeneralErrorCode.BAD_REQUEST);
-        }
         MissionResDTO.MissionList result = missionService.getMissionList(
                 request.memberId(),
                 request.resolveIsComplete(),

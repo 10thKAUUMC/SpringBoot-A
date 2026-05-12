@@ -6,6 +6,7 @@ import com.example.umc10th.domain.mission.exception.code.MissionSuccessCode;
 import com.example.umc10th.domain.mission.service.MissionService;
 import com.example.umc10th.global.apiPayload.ApiResponse;
 import com.example.umc10th.global.apiPayload.code.BaseSuccessCode;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,7 @@ public class StoreMissionController {
     @PostMapping("/{storeId}/missions")
     public ApiResponse<Void> createMission(
             @PathVariable Long storeId,
-            @RequestBody MissionReqDTO.CreateMission request
+            @Valid @RequestBody MissionReqDTO.CreateMission request
     ) {
         missionService.createStoreMission(storeId, request);
         BaseSuccessCode code = MissionSuccessCode.STORE_MISSION_CREATED;
