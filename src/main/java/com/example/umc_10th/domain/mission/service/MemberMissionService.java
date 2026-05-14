@@ -16,7 +16,7 @@ public class MemberMissionService {
 
     private final MemberMissionRepository memberMissionRepository;
 
-    public List<MissionResDTO.GetUserMission> getInProgressOrCompletedMissions(Long memberId) {
+    public List<MissionResDTO.GetUserMissions> getInProgressOrCompletedMissions(Long memberId) {
         List<MemberMission> memberMissions = memberMissionRepository.findInProgressOrCompletedMissions(memberId);
         return memberMissions.stream()
                 .map(MissionConverter::toUserMissionDTO)
