@@ -1,7 +1,8 @@
 package com.example.umc_10th.domain.store.exception;
 
-public class StoreException extends RuntimeException {
-    public StoreException(String message) {
-        super(message);
-    }
+import com.example.umc_10th.global.apiPayload.code.BaseErrorCode;
+import com.example.umc_10th.global.apiPayload.exception.ProjectException;
+
+public class StoreException extends ProjectException {
+    public StoreException(BaseErrorCode errorCode) {super(errorCode);}
 }
