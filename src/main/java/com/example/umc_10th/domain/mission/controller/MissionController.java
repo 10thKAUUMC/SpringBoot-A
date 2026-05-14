@@ -71,11 +71,15 @@ public class MissionController {
     }
 
     // 사용자 미션 목록 조회 (상태별)
-    @GetMapping("/v1/users/missions")
-    public ResponseEntity<ApiResponse<List<MissionResDTO.GetUserMissions>>> getInProgressOrCompletedMissions() {
-        Long memberId = 1L; // 임시 사용자 ID
-
-        List<MissionResDTO.GetUserMissions> missions = memberMissionService.getInProgressOrCompletedMissions(memberId);
+    @PostMapping("/v1/users/missions")
+    public ResponseEntity<ApiResponse<List<MissionResDTO.GetUserMissions>>> getUserMissions(
+            @RequestBody MissionReqDTO.GetMissions dto
+    ) {
+        List<MissionResDTO.GetUserMissions> missions =
+                memberMissionService.getUserMissions(
+                dto.memberId(),
+                dto.status()
+                );
         return ResponseEntity.ok(
                 ApiResponse.onSuccess(MissionSuccessCode.OK, missions)
         );
