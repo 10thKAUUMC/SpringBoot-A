@@ -5,6 +5,7 @@ import com.example.umc_10th.domain.users.dto.UserResDTO;
 import com.example.umc_10th.domain.users.entity.User;
 import com.example.umc_10th.domain.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,12 +13,34 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserResDTO.JoinResultDTO join(UserReqDTO.JoinDTO request) {
-        return UserResDTO.JoinResultDTO.builder()
-                .id(1L)
-                .loginId(request.loginId())
+
+        if (userRepository.existsByLoginId(request.loginId())) {
+            throw new RuntimeException("이미 존재하는 로그인 ID입니다.");
+        }
+
+        if (userRepository.existsByEmail(request.email())) {
+            throw new RuntimeException("이미 존재하는 이메일입니다.");
+        }
+
+        User user = User.builder()
                 .userName(request.userName())
+                .phoneNumber(request.phoneNumber())
+                .loginId(request.loginId())
+                .email(request.email())
+                .password(passwordEncoder.encode(request.password()))
+                .totalPoint(0)
+                .isAuthenticated(false)
+                .build();
+
+        User savedUser = userRepository.save(user);
+
+        return UserResDTO.JoinResultDTO.builder()
+                .id(savedUser.getId())
+                .loginId(savedUser.getLoginId())
+                .userName(savedUser.getUserName())
                 .build();
     }
 
