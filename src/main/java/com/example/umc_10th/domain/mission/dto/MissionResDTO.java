@@ -48,4 +48,12 @@ public class MissionResDTO {
             String nextCursor,
             Integer pageSize
     ){}
+
+    // 페이지네이션 틀
+    @Builder
+    public record OffsetPagenation<T>(
+            List<T> data,
+            Integer pageNumber,
+            Integer pageSize
+    ){}
 }

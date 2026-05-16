@@ -10,7 +10,6 @@ import com.example.umc_10th.global.apiPayload.ApiResponse;
 import com.example.umc_10th.global.apiPayload.code.BaseSuccessCode;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,17 +71,14 @@ public class MissionController {
 
     // 사용자 미션 목록 조회 (상태별)
     @PostMapping("/v1/users/missions")
-    public ResponseEntity<ApiResponse<List<MissionResDTO.GetUserMissions>>> getUserMissions(
-            @RequestBody MissionReqDTO.GetMissions dto
+    public ApiResponse<MissionResDTO.OffsetPagenation<MissionResDTO.GetUserMissions>> getUserMissions(
+            @RequestBody MissionReqDTO.GetMissions dto,
+            @RequestParam Integer pageSize,
+            @RequestParam Integer pageNumber,
+            @RequestParam(required = false) String sort
     ) {
-        List<MissionResDTO.GetUserMissions> missions =
-                memberMissionService.getUserMissions(
-                dto.memberId(),
-                dto.status()
-                );
-        return ResponseEntity.ok(
-                ApiResponse.onSuccess(MissionSuccessCode.OK, missions)
-        );
+        BaseSuccessCode code = MissionSuccessCode.OK;
+        return ApiResponse.onSuccess(code, memberMissionService.getUserMissions(dto.memberId(), dto.status(), pageSize, pageNumber, sort));
     }
 
     // 가게 미션 생성

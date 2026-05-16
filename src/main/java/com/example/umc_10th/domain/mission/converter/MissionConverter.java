@@ -64,4 +64,17 @@ public class MissionConverter {
                 .pageSize(pageSize)
                 .build();
     }
+
+    // 오프셋 기반 페이지네이션 틀 생성
+    public static <T> MissionResDTO.OffsetPagenation<T> toOffsetPagination(
+            List<T> data,
+            Integer pageNumber,
+            Integer pageSize
+    ){
+        return MissionResDTO.OffsetPagenation.<T>builder()
+                .data(data)
+                .pageNumber(pageNumber)
+                .pageSize(pageSize)
+                .build();
+    }
 }
