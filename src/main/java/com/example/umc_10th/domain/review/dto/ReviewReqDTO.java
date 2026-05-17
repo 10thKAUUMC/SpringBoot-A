@@ -8,4 +8,9 @@ public class ReviewReqDTO {
             Float star,
             String content
     ) {}
+
+    public  record GetMyReviews(
+            Long userId,
+            Long storeId
+    ){}
 }
