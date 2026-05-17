@@ -8,6 +8,7 @@ import com.example.umc_10th.domain.review.exception.code.ReviewSuccessCode;
 import com.example.umc_10th.domain.review.service.ReviewService;
 import com.example.umc_10th.global.apiPayload.ApiResponse;
 import com.example.umc_10th.global.apiPayload.code.BaseSuccessCode;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,7 @@ public class ReviewController {
     // 내가 작성한 리뷰 조회
     @PostMapping("/v1/users/reviews")
     public ApiResponse<ReviewResDTO.Pagenation<ReviewResDTO.GetMyReviews>> getStoreMissions(
-            @RequestBody ReviewReqDTO.GetMyReviews request,
+            @RequestBody @Valid ReviewReqDTO.GetMyReviews request,
             @RequestParam Integer pageSize,
             @RequestParam String cursor,
             @RequestParam String query){
