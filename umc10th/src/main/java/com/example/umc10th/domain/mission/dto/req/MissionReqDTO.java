@@ -1,12 +1,21 @@
 package com.example.umc10th.domain.mission.dto.req;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+import java.time.LocalDate;
 
 public class MissionReqDTO {
 
-    public record MissionListQuery(
-            @JsonProperty("is_complete")
-            boolean isComplete
+    public record CreateMission(
+            @NotNull
+            LocalDate deadline,
+            @NotNull
+            @Min(0)
+            Integer point,
+            @NotBlank
+            String conditional
     ) {
     }
 }
