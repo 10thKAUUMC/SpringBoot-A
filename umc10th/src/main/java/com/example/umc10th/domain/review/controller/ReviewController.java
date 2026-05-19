@@ -28,7 +28,7 @@ public class ReviewController {
 
     @Operation(
             summary = "가게 리뷰 작성",
-            description = """회원이 특정 가게에 리뷰(별점·내용)를 등록합니다."""
+            description = "회원이 특정 가게에 리뷰(별점·내용)를 등록합니다."
     )
     @PostMapping("/{storeId}/reviews")
     public ApiResponse<ReviewResDTO.CreateReview> createReview(
