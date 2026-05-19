@@ -3,16 +3,18 @@ package com.example.umc10th.domain.member.dto.res;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 
-import java.time.LocalDate;
-import java.util.List;
-
 public class MemberResDTO {
 
     @Builder
     public record GetInfo(
+            Long memberId,
             String name,
             String profileUrl,
             String email,
+            String gender,
+            String birthDate,
+            String address,
+            String detailAddress,
             String phoneNumber,
             Integer point
     ) {
@@ -20,17 +22,35 @@ public class MemberResDTO {
 
     @Builder
     public record Signup(
-            @JsonProperty("user_name")
-            String userName,
-            String gender,
-            LocalDate birthday,
-            String address,
-            @JsonProperty("detail_address")
-            String detailAddress,
-            String email,
-            String phone,
-            List<String> category,
-            String message
+            int status,
+            String message,
+            SignupData data
+    ) {
+    }
+
+    @Builder
+    public record SignupData(
+            @JsonProperty("userId")
+            Long userId
+    ) {
+    }
+
+    @Builder
+    public record Login(
+            int status,
+            String message,
+            LoginData data
+    ) {
+    }
+
+    @Builder
+    public record LoginData(
+            @JsonProperty("accessToken")
+            String accessToken,
+            @JsonProperty("tokenType")
+            String tokenType,
+            @JsonProperty("expiresIn")
+            Long expiresIn
     ) {
     }
 }

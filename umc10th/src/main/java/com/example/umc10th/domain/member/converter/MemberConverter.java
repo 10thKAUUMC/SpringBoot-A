@@ -10,8 +10,13 @@ public class MemberConverter {
             Member member
     ) {
         return MemberResDTO.GetInfo.builder()
+                .memberId(member.getMemberId())
                 .email(member.getEmail())
                 .name(member.getName())
+                .gender(member.getGender() == null ? null : member.getGender().name())
+                .birthDate(member.getBirth() == null ? null : member.getBirth().toString())
+                .address(member.getAddress())
+                .detailAddress(member.getDetailAddress())
                 .point(member.getPoint())
                 .phoneNumber(member.getPhoneNumber())
                 .profileUrl(member.getProfileUrl())
