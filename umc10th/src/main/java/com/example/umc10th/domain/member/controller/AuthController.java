@@ -36,4 +36,17 @@ public class AuthController {
         BaseSuccessCode code = MemberSuccessCode.SIGNUP_OK;
         return ResponseEntity.status(code.getStatus()).body(result);
     }
+
+    @Operation(
+            summary = "로그인",
+            description = "username(email), password를 검증하고 JWT Access Token을 발급합니다."
+    )
+    @PostMapping("/login")
+    public ResponseEntity<MemberResDTO.Login> login(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "로그인 요청")
+            @Valid @RequestBody MemberReqDTO.Login request
+    ) {
+        MemberResDTO.Login result = memberService.login(request);
+        return ResponseEntity.ok(result);
+    }
 }

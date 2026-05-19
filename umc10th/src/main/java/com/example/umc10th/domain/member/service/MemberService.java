@@ -16,6 +16,8 @@ import com.example.umc10th.domain.member.repository.MemberFoodRepository;
 import com.example.umc10th.domain.member.repository.MemberRepository;
 import com.example.umc10th.domain.member.repository.MemberTermRepository;
 import com.example.umc10th.domain.member.repository.TermRepository;
+import com.example.umc10th.domain.member.security.AuthMember;
+import com.example.umc10th.global.config.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,16 +39,10 @@ public class MemberService {
     private final TermRepository termRepository;
     private final MemberTermRepository memberTermRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     // 마이페이지
-    public MemberResDTO.GetInfo getInfo(
-            MemberReqDTO.GetInfo dto
-    ) {
-        Long memberId = dto.id();
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
-
+    public MemberResDTO.GetInfo getMyInfo(Member member) {
         return MemberConverter.toGetInfo(member);
     }
 
@@ -95,6 +91,26 @@ public class MemberService {
                 .message("회원가입이 완료되었습니다.")
                 .data(MemberResDTO.SignupData.builder()
                         .userId(saved.getMemberId())
+                        .build())
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public MemberResDTO.Login login(MemberReqDTO.Login request) {
+        Member member = memberRepository.findByEmail(request.username())
+                .orElseThrow(() -> new MemberException(MemberErrorCode.INVALID_CREDENTIALS));
+        if (!passwordEncoder.matches(request.password(), member.getPassword())) {
+            throw new MemberException(MemberErrorCode.INVALID_CREDENTIALS);
+        }
+
+        String accessToken = jwtUtil.createAccessToken(new AuthMember(member));
+        return MemberResDTO.Login.builder()
+                .status(200)
+                .message("로그인에 성공했습니다.")
+                .data(MemberResDTO.LoginData.builder()
+                        .accessToken(accessToken)
+                        .tokenType("Bearer")
+                        .expiresIn(1_800_000L)
                         .build())
                 .build();
     }

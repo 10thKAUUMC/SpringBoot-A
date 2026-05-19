@@ -11,13 +11,6 @@ import java.util.List;
 
 public class MemberReqDTO {
 
-    // 마이페이지
-    public record GetInfo(
-            @NotNull
-            Long id
-    ) {
-    }
-
     public record Signup(
             @NotBlank
             @Email
@@ -32,6 +25,15 @@ public class MemberReqDTO {
             @Valid
             Profile profile,
             List<String> favoriteFoodCategories
+    ) {
+    }
+
+    public record Login(
+            @NotBlank
+            @Email
+            String username,
+            @NotBlank
+            String password
     ) {
     }
 
