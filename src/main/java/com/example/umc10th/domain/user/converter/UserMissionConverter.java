@@ -13,7 +13,7 @@ public class UserMissionConverter {
     public static UserResponseDTO.UserMissionPreViewDTO userMissionPreViewDTO(UserMission userMission) {
         return UserResponseDTO.UserMissionPreViewDTO.builder()
                 .missionId(userMission.getMission().getId())
-                .storeName(userMission.getMission().getStore().getName()) // Fetch Join 덕분에 안전함
+                .storeName(userMission.getMission().getStore().getName())
                 .missionSpec(userMission.getMission().getMissionSpec())
                 .reward(userMission.getMission().getReward())
                 .status(userMission.getStatus().name())

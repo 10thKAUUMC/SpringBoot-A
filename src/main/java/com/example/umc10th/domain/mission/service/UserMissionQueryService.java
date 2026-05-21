@@ -27,5 +27,12 @@ public class UserMissionQueryService {
 
     }
 
+    public Page<UserMission> getMissionsByStore(Long storeId, Integer page) {
+        int pageNumber = (page != null && page > 0) ? page - 1 : 0;
+        Pageable pageable = PageRequest.of(pageNumber, 10);
+        // Repository에 findAllByMission_Store_Id 메서드가 있다고 가정합니다.
+        return userMissionRepository.findAllByMissionStoreId(storeId, pageable);
+    }
+
 
 }

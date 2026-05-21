@@ -4,7 +4,6 @@ import com.example.umc10th.domain.user.domain.User;
 import com.example.umc10th.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.sql.results.graph.Fetch;
 
 @Entity
 @Getter
@@ -17,6 +16,7 @@ public class UserMission extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Setter
     @Enumerated(EnumType.STRING) //From MissionStatus, Challenging, Complete, Failed
     private MissionStatus status;
 
@@ -27,4 +27,5 @@ public class UserMission extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id")
     private Mission mission;
+
 }

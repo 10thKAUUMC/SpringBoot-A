@@ -27,6 +27,19 @@ public class User extends BaseEntity { //We need to know the time info, so inher
     @Column(nullable = false, unique = true, length = 50)
     private String email;
 
+    @Column(nullable = false, length = 128)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(10")
+    private Gender gender;
+
+    @Column(length = 20)
+    private String birth;
+
+    @Column(length = 255)
+    private String address;
+
     @Column(length = 20)
     private String phoneNumber;
 

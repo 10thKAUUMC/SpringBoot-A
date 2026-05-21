@@ -1,14 +1,16 @@
-package com.example.umc10th.domain.user.application;
+package com.example.umc10th.domain.user.service;
 
 import com.example.umc10th.domain.review.dao.ReviewRepository;
 import com.example.umc10th.domain.review.domain.Review;
 import com.example.umc10th.domain.user.dao.UserRepository;
+import com.example.umc10th.domain.user.domain.Gender;
 import com.example.umc10th.domain.user.domain.User;
 import com.example.umc10th.domain.user.dto.UserRequestDTO;
 import com.example.umc10th.domain.user.dto.UserResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -20,15 +22,23 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Transactional
     public UserResponseDTO.JoinResultDTO join(UserRequestDTO.JoinDTO request) {
         //Come up with a logic where it checks for email that is assigned
 
+        String encodedPassword = passwordEncoder.encode(request.password());
+
         //Converts DTO data into Entity
         User newUser = User.builder()
                 .nickname(request.nickname())
                 .email(request.email())
+                .password(encodedPassword)
+                .birth(request.birth())
+                .gender(request.gender().equals("남") ? Gender.MALE :
+                        request.gender().equals("여") ? Gender.FEMALE : Gender.NONE)
+                .address(request.detail_address())
                 .build();
 
         userRepository.save(newUser);

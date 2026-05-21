@@ -19,7 +19,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Slice<Review> findALLByUserAndIdLessThanOrderByIdDesc(User user, Long lastId, Pageable pageable);
 
-    @Query("SELECT r FROM Review r WHERE r.user = :user AND (r.rating < :rating OR (r.rating = :rating AND r.id < :lastId)) ORDER BY r.rating DESC, r.id DESC")
+    @Query("SELECT r FROM Review r WHERE r.user = :user AND (r.score < :score OR (r.score = :score AND r.id < :lastId)) ORDER BY r.score DESC, r.id DESC")
     Slice<Review> findByUserAndScoreCursor(@Param("user") User user, @Param("score") Float score, @Param("lastId") Long lastId, Pageable pageable);
 
 }

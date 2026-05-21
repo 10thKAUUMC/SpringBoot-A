@@ -1,6 +1,6 @@
 package com.example.umc10th.domain.user.api;
 
-import com.example.umc10th.domain.user.application.UserService;
+import com.example.umc10th.domain.user.service.UserService;
 import com.example.umc10th.domain.user.dto.UserRequestDTO;
 import com.example.umc10th.domain.user.dto.UserResponseDTO;
 import com.example.umc10th.global.apiPayload.ApiResponse;
