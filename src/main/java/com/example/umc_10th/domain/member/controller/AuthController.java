@@ -3,8 +3,9 @@ package com.example.umc_10th.domain.member.controller;
 import com.example.umc_10th.domain.member.dto.MemberReqDTO;
 import com.example.umc_10th.domain.member.dto.MemberResDTO;
 import com.example.umc_10th.domain.member.exception.code.MemberSuccessCode;
-import com.example.umc_10th.domain.member.repository.MemberRepository;
+import com.example.umc_10th.domain.member.service.AuthService;
 import com.example.umc_10th.global.apiPayload.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,25 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
-    private final MemberRepository memberRepository;
+
+    private final AuthService authService;
 
     // 회원가입
     @PostMapping("/v1/signup")
     public ResponseEntity<ApiResponse<MemberResDTO.Signup>> signup(
-            @RequestBody MemberReqDTO.Signup req
+            @Valid @RequestBody MemberReqDTO.Signup req
     ) {
-
-        //더미 ID 생성
-        Long dummyMemberId = 1L;
-
-        MemberResDTO.Signup response = MemberResDTO.Signup.builder()
-                .memberId(dummyMemberId)
-                .name(req.name())
-                .build();
-
+        MemberResDTO.Signup response = authService.signup(req);
         return ResponseEntity.ok(
                 ApiResponse.onSuccess(MemberSuccessCode.SIGNUP_OK, response)
         );
     }
-
 }

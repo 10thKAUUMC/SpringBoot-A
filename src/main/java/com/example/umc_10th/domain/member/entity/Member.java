@@ -5,6 +5,7 @@ import com.example.umc_10th.domain.store.entity.Location;
 import com.example.umc_10th.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Getter
 @Table(name = "member")
 public class Member extends BaseEntity {
@@ -31,7 +33,7 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender = Gender.NONE;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "phone_number", nullable = false)
@@ -48,6 +50,9 @@ public class Member extends BaseEntity {
 
     @Column(name = "point", nullable = false)
     private int point = 0;
+
+    @Column(name = "password", nullable = false)
+    private String password;
 
     @ManyToOne
     @JoinColumn(name = "location_id")

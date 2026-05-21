@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Builder
@@ -27,4 +29,10 @@ public class MemberTerm {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "term_id", nullable = false)
     private Term term;
+
+    @Column(name = "agreed", nullable = false)
+    private Boolean agreed;
+
+    @Column(name = "agreed_at", nullable = false)
+    private LocalDateTime agreedAt;
 }
