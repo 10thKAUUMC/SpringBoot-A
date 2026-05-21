@@ -17,15 +17,7 @@ public class AuthService {
     private final TermService termService;
     private final PasswordEncoder passwordEncoder;
 
-    /**
-     * 회원가입
-     * 1. 약관 검증 (필수 약관 동의 확인)
-     * 2. 이메일 중복 확인
-     * 3. 비밀번호 암호화
-     * 4. 회원 저장
-     * 5. 선호 음식 저장
-     * 6. 약관 동의 기록 저장
-     */
+    // 회원 가입
     @Transactional
     public MemberResDTO.Signup signup(MemberReqDTO.Signup req) {
         // 1. 약관 검증 - 필수 약관이 모두 동의되었는지 확인
