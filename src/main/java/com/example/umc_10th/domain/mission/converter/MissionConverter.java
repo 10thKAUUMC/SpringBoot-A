@@ -1,13 +1,18 @@
 package com.example.umc_10th.domain.mission.converter;
 
+import com.example.umc_10th.domain.mission.dto.MissionReqDTO;
 import com.example.umc_10th.domain.mission.dto.MissionResDTO;
+import com.example.umc_10th.domain.mission.entity.Mission;
 import com.example.umc_10th.domain.mission.entity.mapping.MemberMission;
+import com.example.umc_10th.domain.store.entity.Store;
+
+import java.util.List;
 
 public class MissionConverter {
 
     // 사용자 미션 목록 조회 (상태별)
-    public static MissionResDTO.GetUserMission toUserMissionDTO(MemberMission memberMission) {
-        return MissionResDTO.GetUserMission.builder()
+    public static MissionResDTO.GetUserMissions toUserMissionDTO(MemberMission memberMission) {
+        return MissionResDTO.GetUserMissions.builder()
                 .storeName(memberMission.getMission().getStore().getName())
                 .title(memberMission.getMission().getTitle())
                 .point(memberMission.getMission().getPoint())
@@ -22,6 +27,54 @@ public class MissionConverter {
                 .storeName(memberMission.getMission().getStore().getName())
                 .missionTitle(memberMission.getMission().getTitle())
                 .rewardPoint(memberMission.getMission().getPoint())
+                .build();
+    }
+
+    // 가게 미션 생성
+    public static Mission toMission(Store store, MissionReqDTO.CreateMission dto) {
+        return Mission.builder()
+                .store(store)
+                .title(dto.title())
+                .point(dto.point())
+                .build();
+    }
+
+    // 가게 내 미션 조회
+    public static MissionResDTO.GetStoreMissions toGetMission(
+            Mission mission
+    ){
+        return MissionResDTO.GetStoreMissions.builder()
+                .missionId(mission.getId())
+                .point(mission.getPoint())
+                .title(mission.getTitle())
+                .build();
+    }
+
+    // 페이지네이션 틀 생성
+    public static <T> MissionResDTO.Pagenation<T> toPagination(
+            List<T> data,
+            Boolean hasNext,
+            String nextCursor,
+            Integer pageSize
+    ){
+        return MissionResDTO.Pagenation.<T>builder()
+                .data(data)
+                .hasNext(hasNext)
+                .nextCursor(nextCursor)
+                .pageSize(pageSize)
+                .build();
+    }
+
+    // 오프셋 기반 페이지네이션 틀 생성
+    public static <T> MissionResDTO.OffsetPagenation<T> toOffsetPagination(
+            List<T> data,
+            Integer pageNumber,
+            Integer pageSize
+    ){
+        return MissionResDTO.OffsetPagenation.<T>builder()
+                .data(data)
+                .pageNumber(pageNumber)
+                .pageSize(pageSize)
                 .build();
     }
 }

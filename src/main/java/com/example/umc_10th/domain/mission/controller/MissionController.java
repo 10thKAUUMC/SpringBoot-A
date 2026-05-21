@@ -1,10 +1,14 @@
 package com.example.umc_10th.domain.mission.controller;
 
+import com.example.umc_10th.domain.mission.dto.MissionReqDTO;
 import com.example.umc_10th.domain.mission.dto.MissionResDTO;
 import com.example.umc_10th.domain.mission.enums.MissionStatus;
 import com.example.umc_10th.domain.mission.exception.code.MissionSuccessCode;
 import com.example.umc_10th.domain.mission.service.MemberMissionService;
+import com.example.umc_10th.domain.mission.service.MissionService;
 import com.example.umc_10th.global.apiPayload.ApiResponse;
+import com.example.umc_10th.global.apiPayload.code.BaseSuccessCode;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +21,7 @@ import java.util.List;
 public class MissionController {
 
     private final MemberMissionService memberMissionService;
+    private final MissionService missionService;
 
     // 사용자 지역 기반 미션 조회
     @GetMapping("/v1/users/locations/missions")
@@ -65,13 +70,35 @@ public class MissionController {
     }
 
     // 사용자 미션 목록 조회 (상태별)
-    @GetMapping("/v1/users/missions")
-    public ResponseEntity<ApiResponse<List<MissionResDTO.GetUserMission>>> getInProgressOrCompletedMissions() {
-        Long memberId = 1L; // 임시 사용자 ID
+    @PostMapping("/v1/users/missions")
+    public ApiResponse<MissionResDTO.OffsetPagenation<MissionResDTO.GetUserMissions>> getUserMissions(
+            @RequestBody MissionReqDTO.GetMissions dto,
+            @RequestParam Integer pageSize,
+            @RequestParam Integer pageNumber,
+            @RequestParam(required = false) String sort
+    ) {
+        BaseSuccessCode code = MissionSuccessCode.OK;
+        return ApiResponse.onSuccess(code, memberMissionService.getUserMissions(dto.memberId(), dto.status(), pageSize, pageNumber, sort));
+    }
 
-        List<MissionResDTO.GetUserMission> missions = memberMissionService.getInProgressOrCompletedMissions(memberId);
-        return ResponseEntity.ok(
-                ApiResponse.onSuccess(MissionSuccessCode.OK, missions)
-        );
+    // 가게 미션 생성
+    @PostMapping("/v1/stores/{storeId}/missions")
+    public ApiResponse<Void> createMission(
+            @PathVariable Long storeId,
+            @RequestBody @Valid MissionReqDTO.CreateMission dto
+    ){
+        BaseSuccessCode code = MissionSuccessCode.CREATED;
+        return ApiResponse.onSuccess(code, missionService.createMission(storeId, dto));
+    }
+
+    // 가게 내 미션들 조회
+    @GetMapping("/v1/stores/{storeId}/missions")
+    public ApiResponse<MissionResDTO.Pagenation<MissionResDTO.GetStoreMissions>> getStoreMissions(
+            @PathVariable Long storeId,
+            @RequestParam Integer pageSize,
+            @RequestParam String cursor,
+            @RequestParam String query){
+        BaseSuccessCode code = MissionSuccessCode.OK;
+        return ApiResponse.onSuccess(code, missionService.getStoreMissions(storeId, pageSize, cursor, query));
     }
 }
