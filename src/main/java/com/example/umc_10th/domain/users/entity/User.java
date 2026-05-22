@@ -29,6 +29,15 @@ public class User extends BaseEntity {
     @Column(name = "email", length = 100)
     private String email;
 
+    @Column(name = "gender", length = 10)
+    private String gender;
+
+    @Column(name = "birth", length = 20)
+    private String birth;
+
+    @Column(name = "address", length = 100)
+    private String address;
+
     @Column(name = "total_point")
     private Integer totalPoint;
 

@@ -31,6 +31,9 @@ public class UserService {
                 .loginId(request.loginId())
                 .email(request.email())
                 .password(passwordEncoder.encode(request.password()))
+                .gender(request.gender())
+                .birth(request.birth())
+                .address(request.address())
                 .totalPoint(0)
                 .isAuthenticated(false)
                 .build();
