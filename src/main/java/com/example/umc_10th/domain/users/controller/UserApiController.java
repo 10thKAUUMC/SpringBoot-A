@@ -1,5 +1,5 @@
 package com.example.umc_10th.domain.users.controller;
-
+import org.springframework.security.core.Authentication;
 import com.example.umc_10th.domain.users.dto.UserReqDTO;
 import com.example.umc_10th.domain.users.dto.UserResDTO;
 import com.example.umc_10th.domain.users.service.UserService;
@@ -25,9 +25,22 @@ public class UserApiController {
     }
 
     @GetMapping("/users/me")
-    public ApiResponse<UserResDTO.MyPageDTO> getMyPage() {
+    public ApiResponse<UserResDTO.MyPageDTO> getMyPage(
+            Authentication authentication
+    ) {
+        Long userId = (Long) authentication.getPrincipal();
+
         return ApiResponse.onSuccess(
-                userService.getMyPage()
+                userService.getMyPage(userId)
+        );
+    }
+
+    @PostMapping("/users/login")
+    public ApiResponse<UserResDTO.LoginResultDTO> login(
+            @RequestBody @Valid UserReqDTO.LoginDTO request
+    ) {
+        return ApiResponse.onSuccess(
+                userService.login(request)
         );
     }
 }
