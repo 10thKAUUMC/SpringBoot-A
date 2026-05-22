@@ -1,4 +1,5 @@
 package com.example.umc_10th.domain.users.dto;
+import jakarta.validation.constraints.NotNull;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -28,4 +29,9 @@ public class UserReqDTO {
 
             String address
     ){}
+
+    public record HomeRequestDTO(
+            @NotNull(message = "사용자 ID는 필수입니다.")
+            Long memberId
+    ) {}
 }
