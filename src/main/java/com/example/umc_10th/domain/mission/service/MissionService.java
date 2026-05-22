@@ -20,9 +20,9 @@ public class MissionService {
     private final MemberMissionRepository memberMissionRepository;
     private final UserRepository userRepository;
 
-    public MissionResDTO.MissionListDTO getMissions(MissionStatus status, Integer page) {
+    public MissionResDTO.MissionListDTO getMissions(Long memberId, MissionStatus status, Integer page) {
 
-        User user = userRepository.findById(1L)
+        User user = userRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
 
         Page<MemberMission> memberMissions =

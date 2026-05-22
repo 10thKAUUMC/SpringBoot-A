@@ -19,9 +19,9 @@ public class HomeService {
     private final MissionRepository missionRepository;
     private final MemberMissionRepository memberMissionRepository;
 
-    public UserResDTO.HomeDTO getHome(Long regionId, Integer page) {
+    public UserResDTO.HomeDTO getHome(Long memberId, Long regionId, Integer page) {
 
-        User user = userRepository.findById(1L)
+        User user = userRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
 
         Page<Mission> missions = missionRepository.findHomeMissionsByRegionId(
