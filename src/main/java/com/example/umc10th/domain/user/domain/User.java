@@ -31,7 +31,7 @@ public class User extends BaseEntity { //We need to know the time info, so inher
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(10")
+    @Column(length = 10)
     private Gender gender;
 
     @Column(length = 20)
@@ -49,9 +49,11 @@ public class User extends BaseEntity { //We need to know the time info, so inher
     @Column(columnDefinition = "BOOLEAN DEFAULT false")
     private Boolean isVerified;
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Review> reviewList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserMission> userMissionList = new ArrayList<>();
 

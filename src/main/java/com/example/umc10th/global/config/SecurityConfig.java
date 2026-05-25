@@ -19,6 +19,14 @@ public class SecurityConfig {
 
     private final SecurityExceptionHandler securityExceptionHandler;
 
+    private final String[] allowUris = {
+            "/swagger-ui/**",
+            "/swagger-resources/**",
+            "/v3/api-docs/**",
+            "/auth/**"
+    };
+
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         //Uses Bcrypt hash function to encrypt the password(including salting)
@@ -31,19 +39,20 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) //Since it's an API server, disabling CSRF
                 .authorizeHttpRequests(auth -> auth
                         //Public API: permit register & logic etc.
-                        .requestMatchers("/api/users/join", "/api/users/login").permitAll() //Can use it without register
-                        //Open up Swagger as well
-                        .requestMatchers("/v3/api-doc/**", "/swagger-ui/**").permitAll()
+                        .requestMatchers(allowUris).permitAll()
                         //Other than these two, requires authentication
-                        .anyRequest().authenticated()
+                        .anyRequest().authenticated() //if you wanna see it then use permitAll()
+                )
+                .formLogin(form -> form
+                        .defaultSuccessUrl("/swagger-ui/index.html", true)
+                        .permitAll()
                 )
                 //Authorization/Authenication exceptions
-                .exceptionHandling(handler -> handler
+                .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(securityExceptionHandler) //Error 401
                         .accessDeniedHandler(securityExceptionHandler) //Error 403
                 );
 
         return http.build();
     }
-
 }

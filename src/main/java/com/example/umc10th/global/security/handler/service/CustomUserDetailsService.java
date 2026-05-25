@@ -1,10 +1,9 @@
-package com.example.umc10th.global.service;
+package com.example.umc10th.global.security.handler.service;
 
 import com.example.umc10th.domain.user.dao.UserRepository;
 import com.example.umc10th.domain.user.domain.User;
 import com.example.umc10th.global.apiPayload.code.GeneralErrorCode;
 import com.example.umc10th.global.entity.AuthMember;
-import jdk.jshell.spi.ExecutionControl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

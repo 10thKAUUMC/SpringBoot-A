@@ -13,7 +13,9 @@ public enum GeneralErrorCode implements BaseErrorCode {
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "COMMON401_1", "Require Authentication"),
     FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403_1", "Forbidden Access"),
     NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404_1", "Resources Not Found"),
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON500", "Error Occurred in the Server");
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON500", "Error Occurred in the Server"),
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER404", "Cannot find the User");
+
 
     private final HttpStatus status;
     private final String code;

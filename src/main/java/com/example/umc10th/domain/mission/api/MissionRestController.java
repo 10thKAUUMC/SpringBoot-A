@@ -2,6 +2,7 @@ package com.example.umc10th.domain.mission.api;
 
 import com.example.umc10th.domain.mission.domain.UserMission;
 import com.example.umc10th.domain.mission.dto.MissionResponseDTO;
+import com.example.umc10th.domain.mission.service.MissionCommandService;
 import com.example.umc10th.domain.mission.service.UserMissionQueryService;
 import com.example.umc10th.domain.user.converter.UserMissionConverter;
 import com.example.umc10th.domain.user.dto.UserResponseDTO;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class MissionRestController {
 
     private final UserMissionQueryService missionQueryService;
-    //private final MissionCommandService missionCommandService;
+    private final MissionCommandService missionCommandService;
 
 
     @GetMapping("/missions")

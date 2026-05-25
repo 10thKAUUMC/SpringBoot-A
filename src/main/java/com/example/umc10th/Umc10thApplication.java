@@ -14,21 +14,8 @@ import java.sql.SQLOutput;
 @SpringBootApplication
 public class Umc10thApplication {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         SpringApplication.run(Umc10thApplication.class, args);
-    }
-
-    @Bean
-    public CommandLineRunner test(UserRepository userRepository){
-        return args -> {
-            User user = User.builder()
-                    .nickname("테스트 유저")
-                    .email("test@test.com")
-                    .build();
-            userRepository.save(user);
-            System.out.println("✅✅✅체 크  유저 저장 완료!");
-        };
-
     }
 
 }

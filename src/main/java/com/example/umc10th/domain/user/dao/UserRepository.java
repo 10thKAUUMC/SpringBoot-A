@@ -4,11 +4,13 @@ import com.example.umc10th.domain.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     //This is dao which stands for Data Access Object
+    Optional<User> findByEmail(String email);
 
-    //Also, this is just an interface, where Spring Data JPA do all the work.
+    Boolean existsByEmail(String email);
 
-    //Here we usually put/provide save(), findById(), findAll(), delete() etc.
 }
