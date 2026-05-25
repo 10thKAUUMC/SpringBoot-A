@@ -18,11 +18,13 @@ import com.example.umc_10th.domain.mission.dto.MissionResDTO;
 import com.example.umc_10th.domain.mission.entity.mapping.MemberMission;
 import com.example.umc_10th.domain.mission.enums.MissionStatus;
 import com.example.umc_10th.domain.mission.repository.MemberMissionRepository;
+import com.example.umc_10th.global.security.entity.AuthMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,12 +38,9 @@ public class MemberService {
 
     // 마이페이지
     public MemberResDTO.GetInfo getInfo(
-            MemberReqDTO.GetInfo dto
+            AuthMember member
     ) {
-        Long memberId = dto.id();
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(()-> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
-        return MemberConverter.toGetInfo(member);
+        return MemberConverter.toGetInfo(member.getMember());
     }
 
     // 홈 화면 데이터 생성
@@ -110,4 +109,9 @@ public class MemberService {
         }
     }
 
+
+    @Transactional(readOnly = true)
+    public Optional<Member> findByEmail(String email) {
+        return memberRepository.findByEmail(email);
+    }
 }

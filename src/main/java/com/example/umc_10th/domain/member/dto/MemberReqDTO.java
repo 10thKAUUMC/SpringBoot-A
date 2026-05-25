@@ -61,4 +61,14 @@ public class MemberReqDTO {
             @Valid
             List<TermAgreement> agreedTerms
     ) {}
+
+    // 로그인 요청 DTO
+    public record Login(
+            @NotBlank(message = "이메일은 필수입니다.")
+            @Email(message = "유효하지 않은 이메일 형식입니다.")
+            String email,
+
+            @NotBlank(message = "비밀번호는 필수입니다.")
+            String password
+    ) {}
 }
