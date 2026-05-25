@@ -20,13 +20,16 @@ public class Term extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "required")
+    @Column(name = "content", nullable = false, columnDefinition = "TEXT")
+    private String content;
+
+    @Column(name = "required", nullable = false)
     @Enumerated(EnumType.STRING)
     private RequirementType required;
 
-    @Column(name = "content")
-    private String content;
+    @Column(name = "version", nullable = false)
+    private Integer version = 1;
 }

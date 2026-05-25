@@ -42,5 +42,5 @@ public class ReviewController {
             @RequestParam String cursor,
             @RequestParam String query){
         BaseSuccessCode code = ReviewSuccessCode.OK;
-        return ApiResponse.onSuccess(code, reviewService.getMyReviews(request.userId(), request.userId(), pageSize, cursor, query));
+        return ApiResponse.onSuccess(code, reviewService.getMyReviews(request.userId(), request.storeId(), pageSize, cursor, query));
     }}

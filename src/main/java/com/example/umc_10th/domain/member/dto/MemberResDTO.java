@@ -39,7 +39,8 @@ public class MemberResDTO {
     @Builder
     public record Signup(
             Long memberId,
-            String name
+            String name,
+            String email
     ){}
 
 }
