@@ -30,4 +30,16 @@ public class AuthController {
                 ApiResponse.onSuccess(MemberSuccessCode.SIGNUP_OK, response)
         );
     }
+
+
+    // 로그인
+    @PostMapping("/v1/login")
+    public ResponseEntity<ApiResponse<MemberResDTO.Login>> login(
+            @Valid @RequestBody MemberReqDTO.Login req
+    ) {
+        MemberResDTO.Login response = authService.login(req);
+        return ResponseEntity.ok(
+                ApiResponse.onSuccess(MemberSuccessCode.LOGIN_OK, response)
+        );
+    }
 }

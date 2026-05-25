@@ -4,6 +4,10 @@ import com.example.umc_10th.domain.Term.service.TermService;
 import com.example.umc_10th.domain.member.dto.MemberReqDTO;
 import com.example.umc_10th.domain.member.dto.MemberResDTO;
 import com.example.umc_10th.domain.member.entity.Member;
+import com.example.umc_10th.domain.member.exception.MemberException;
+import com.example.umc_10th.domain.member.exception.code.MemberErrorCode;
+import com.example.umc_10th.global.security.entity.AuthMember;
+import com.example.umc_10th.global.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +20,7 @@ public class AuthService {
     private final MemberService memberService;
     private final TermService termService;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     // 회원 가입
     @Transactional
@@ -54,6 +59,45 @@ public class AuthService {
                 .memberId(savedMember.getId())
                 .name(savedMember.getName())
                 .email(savedMember.getEmail())
+                .build();
+    }
+
+    // 로그인
+    @Transactional(readOnly = true)
+    public MemberResDTO.Login login(
+            MemberReqDTO.Login req
+    ) {
+
+        // 이메일로 회원 조회
+        Member member = memberService.findByEmail(req.email())
+                .orElseThrow(() ->
+                        new MemberException(
+                                MemberErrorCode.MEMBER_NOT_FOUND
+                        ));
+
+        // 비밀번호 검증
+        if (!passwordEncoder.matches(
+                req.password(),
+                member.getPassword()
+        )) {
+            throw new MemberException(
+                    MemberErrorCode.INVALID_PASSWORD
+            );
+        }
+
+        // 인증 객체 생성
+        AuthMember authMember =
+                new AuthMember(member);
+
+        // JWT 생성
+        String token =
+                jwtUtil.createAccessToken(authMember);
+
+        // 응답 반환
+        return MemberResDTO.Login.builder()
+                .memberId(member.getId())
+                .email(member.getEmail())
+                .token(token)
                 .build();
     }
 }

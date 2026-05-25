@@ -43,4 +43,12 @@ public class MemberResDTO {
             String email
     ){}
 
+    // 로그인 응답 DTO
+    @Builder
+    public record Login(
+            Long memberId,
+            String email,
+            String token
+    ) {}
+
 }
