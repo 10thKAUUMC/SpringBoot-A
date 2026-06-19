@@ -44,4 +44,11 @@ public class UserResDTO {
             String missionSpec,
             Integer deadline
     ) {}
+
+    @Builder
+    public record LoginResultDTO(
+            Long userId,
+            String email,
+            String accessToken
+    ) {}
 }

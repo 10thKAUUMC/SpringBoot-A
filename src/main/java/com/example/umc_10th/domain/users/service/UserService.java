@@ -7,6 +7,7 @@ import com.example.umc_10th.domain.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.example.umc_10th.global.security.JwtTokenProvider;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +15,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public UserResDTO.JoinResultDTO join(UserReqDTO.JoinDTO request) {
 
@@ -47,9 +49,9 @@ public class UserService {
                 .build();
     }
 
-    public UserResDTO.MyPageDTO getMyPage() {
+    public UserResDTO.MyPageDTO getMyPage(Long userId) {
 
-        User user = userRepository.findById(1L)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
 
         return UserResDTO.MyPageDTO.builder()
@@ -60,4 +62,23 @@ public class UserService {
                 .totalPoint(user.getTotalPoint())
                 .build();
     }
+
+    public UserResDTO.LoginResultDTO login(UserReqDTO.LoginDTO request) {
+
+        User user = userRepository.findByEmail(request.email())
+                .orElseThrow(() -> new RuntimeException("이메일 또는 비밀번호가 올바르지 않습니다."));
+
+        if (!passwordEncoder.matches(request.password(), user.getPassword())) {
+            throw new RuntimeException("이메일 또는 비밀번호가 올바르지 않습니다.");
+        }
+
+        String accessToken = jwtTokenProvider.createAccessToken(user.getId(), user.getEmail());
+
+        return UserResDTO.LoginResultDTO.builder()
+                .userId(user.getId())
+                .email(user.getEmail())
+                .accessToken(accessToken)
+                .build();
+    }
 }
+

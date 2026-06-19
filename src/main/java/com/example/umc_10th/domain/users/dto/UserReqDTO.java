@@ -30,6 +30,15 @@ public class UserReqDTO {
             String address
     ){}
 
+    public record LoginDTO(
+            @NotBlank(message = "이메일은 필수입니다.")
+            @Email(message = "이메일 형식이 올바르지 않습니다.")
+            String email,
+
+            @NotBlank(message = "비밀번호는 필수입니다.")
+            String password
+    ) {}
+
     public record HomeRequestDTO(
             @NotNull(message = "사용자 ID는 필수입니다.")
             Long memberId

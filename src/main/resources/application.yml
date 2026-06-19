@@ -17,3 +17,6 @@ spring:
     properties:
       hibernate:
         format_sql: true # ???? SQL ??? ?? ?? ???
+jwt:
+  secret: umc10th-jwt-secret-key-for-practice-should-be-long-enough
+  expiration: 3600000
