@@ -7,6 +7,7 @@ import com.example.umc_10th.global.apiPayload.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,10 +27,8 @@ public class UserApiController {
 
     @GetMapping("/users/me")
     public ApiResponse<UserResDTO.MyPageDTO> getMyPage(
-            Authentication authentication
+            @AuthenticationPrincipal Long userId
     ) {
-        Long userId = (Long) authentication.getPrincipal();
-
         return ApiResponse.onSuccess(
                 userService.getMyPage(userId)
         );
